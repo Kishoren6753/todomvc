@@ -15,6 +15,7 @@
     "learn.json"
   ],
   "scripts": {
+    "start": "node server.js",
     "test-server": "gulp test-server &",
     "server": "gulp test-server",
     "gulp": "gulp",
@@ -26,7 +27,8 @@
     "test:all": "node tests/cya.js"
   },
   "dependencies": {
-    "express": "^4.10.0"
+    "express": "^4.10.0",
+    "serve-favicon": "^2.3.0"
   },
   "devDependencies": {
     "@bahmutov/print-env": "^1.0.1",
@@ -56,7 +58,6 @@
     "psi": "^0.1.1",
     "ramda": "^0.25.0",
     "run-sequence": "^1.0.1",
-    "serve-favicon": "^2.3.0",
     "start-server-and-test": "^1.0.0",
     "vinyl-fs": "github:gulpjs/vinyl-fs#59386ca"
   }

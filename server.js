@@ -5,10 +5,21 @@ var fs = require('fs');
 var learnJson = require('./learn.json');
 
 var app = module.exports = express();
-var favicon = require('serve-favicon');
+
+// `serve-favicon` is a nice-to-have for local browsing, but should not block
+// startup in minimal/production installs used by preview environments.
+var favicon;
+try {
+	favicon = require('serve-favicon');
+} catch (e) {
+	favicon = null;
+}
 
 app.use(express.static(__dirname));
-app.use(favicon(__dirname + '/site-assets/favicon.ico'));
+
+if (favicon) {
+	app.use(favicon(__dirname + '/site-assets/favicon.ico'));
+}
 
 Object.defineProperty(module.exports, 'learnJson', {
 	set: function (backend) {
@@ -20,3 +31,16 @@ Object.defineProperty(module.exports, 'learnJson', {
 		});
 	}
 });
+
+// Start the HTTP server when invoked directly (e.g. `node server.js`).
+// This is required for the preview environment which expects the process
+// to bind to `process.env.PORT` (commonly 3000).
+if (require.main === module) {
+	var port = Number(process.env.PORT) || 3000;
+	var host = process.env.HOST || '0.0.0.0';
+
+	app.listen(port, host, function () {
+		// eslint-disable-next-line no-console
+		console.log('TodoMVC server listening on http://' + host + ':' + port);
+	});
+}
